@@ -224,25 +224,13 @@ template:
     - name: runner
       # image: ghcr.io/actions/actions-runner:latest
       image: ghcr.io/actions/actions-runner:latest
-      command: ["sh", "-c", "sudo cp -r /usr/bin/nvidia/* /usr/bin; sudo cp -r /usr/lib/x86_64-linux-gnu/nvidia/* /usr/lib/x86_64-linux-gnu; bash /home/runner/run.sh"]
+      command: ["sh", "-c", "bash /home/runner/run.sh"]
       securityContext:
         privileged: true
       volumeMounts:
-        - name: nvidia-lib
-          mountPath: /usr/lib/x86_64-linux-gnu/nvidia
-        - name: nvidia-bin
-          mountPath: /usr/bin/nvidia
         - name: dshm
           mountPath: /dev/shm
     volumes:
-    - name: nvidia-lib
-      hostPath:
-        path: /opt/nvidia/lib64
-        type: Directory
-    - name: nvidia-bin
-      hostPath:
-        path: /opt/nvidia/bin
-        type: Directory
     - name: dshm
       emptyDir:
         medium: Memory

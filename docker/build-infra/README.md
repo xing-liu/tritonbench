@@ -19,6 +19,21 @@ helm install arc \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
 ```
 
+To upgrade:
+
+```
+helm upgrade --install arc -n arc-systems oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
+```
+
+To view the logs:
+
+```
+# first, get pod-name
+kubectl get pods -n arc-systems
+# then, view the pod logs
+kubectl logs -n arc-systems <pod-name>
+```
+
 ## Step 2: Create secrets and assign it to the namespace
 
 The secrets need to be added to both `arc-systems` and `arc-runners` namespaces.
@@ -51,9 +66,9 @@ kubectl edit secrets -n arc-runners arc-secret
 ## Step 3: Install runner scale set
 
 ```
-INSTALLATION_NAME="build-runner"
-NAMESPACE="arc-runners"
-GITHUB_SECRET_NAME="arc-secret"
+INSTALLATION_NAME="build-runner" \
+NAMESPACE="arc-runners" \
+GITHUB_SECRET_NAME="arc-secret" \
 helm install "${INSTALLATION_NAME}" \
     --namespace "${NAMESPACE}" \
     --create-namespace \
